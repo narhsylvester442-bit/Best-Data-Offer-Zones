@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Buy Data | Best Data Offer Zone</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  background:#0f172a;
+  color:#e5e7eb;
+  font-family:Arial, sans-serif;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  margin:0;
+}
+.card{
+  background:#020617;
+  padding:25px;
+  width:100%;
+  max-width:420px;
+  border-radius:8px;
+}
+h2{text-align:center;margin-bottom:15px}
+select,input{
+  width:100%;
+  padding:12px;
+  margin:8px 0;
+  border-radius:5px;
+  border:none;
+}
+button{
+  width:100%;
+  padding:12px;
+  background:#22c55e;
+  border:none;
+  border-radius:5px;
+  cursor:pointer;
+  margin-top:10px;
+}
+button:disabled{
+  opacity:.6;
+}
+.loader{
+  display:none;
+  text-align:center;
+  margin-top:10px;
+}
+.success{color:#22c55e;text-align:center}
+.error{color:#ef4444;text-align:center}
+footer{
+  text-align:center;
+  margin-top:10px;
+  font-size:13px;
+  opacity:.7;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <h2>Buy Data Bundle</h2>
+
+  <form id="buyForm">
+    <select id="network" required>
+      <option value="">Select Network</option>
+      <option value="MTN">MTN</option>
+      <option value="Telecel">Telecel</option>
+      <option value="AirtelTigo">AirtelTigo</option>
+    </select>
+
+    <select id="volume" required>
+      <option value="">Select Data Size</option>
+      <option value="1">1GB</option>
+      <option value="2">2GB</option>
+      <option value="5">5GB</option>
+      <option value="10">10GB</option>
+    </select>
+
+    <input type="tel" id="number" placeholder="Recipient Number" required>
+
+    <button>Buy Now</button>
+  </form>
+
+  <div class="loader" id="loader">Processing purchase...</div>
+  <p id="msg"></p>
+
+  <footer>
+    Powered by Best Data Offer Zone
+  </footer>
+</div>
+
+<script>
+buyForm.onsubmit = e => {
+  e.preventDefault();
+  msg.innerText="";
+  loader.style.display="block";
+
+  fetch("../../backend/buy.php",{
+    method:"POST",
+    body:new URLSearchParams({
+      network:network.value,
+      volume:volume.value,
+      customer_number:number.value
+    })
+  })
+  .then(r=>r.text())
+  .then(res=>{
+    loader.style.display="none";
+
+    if(res.includes("success")){
+      msg.innerText="✅ Data purchase successful!";
+      msg.className="success";
+      buyForm.reset();
+    }else{
+      msg.innerText="❌ "+res;
+      msg.className="error";
+    }
+  })
+  .catch(()=>{
+    loader.style.display="none";
+    msg.innerText="❌ Network error. Try again.";
+    msg.className="error";
+  });
+};
+</script>
+
+</body>
+</html>
