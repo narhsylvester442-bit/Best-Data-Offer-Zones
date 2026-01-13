@@ -92,8 +92,9 @@ footer{
     <select id="network" required>
       <option value="">Select Network</option>
       <option value="MTN">MTN</option>
-      <option value="Telecel">Telecel</option>
-      <option value="AirtelTigo">AirtelTigo</option>
+      <option value="AT">AirtelTigo</option>
+      <option value="TEL">Telecel</option>
+      <option value="BIG">Big Data</option>
     </select>
 
     <select id="volume" required>
@@ -125,22 +126,33 @@ buyForm.onsubmit = e => {
 
   fetch("../../backend/buy.php",{
     method:"POST",
-    body:new URLSearchParams({
+    headers:{ "Content-Type":"application/json" },
+    body:JSON.stringify({
       network:network.value,
       volume:volume.value,
-      customer_number:number.value
+      customer_number:number.value,
+      externalref:`api_${Date.now()}`
     })
   })
-  .then(r=>r.text())
+  .then(async r=>{
+    let res;
+    try{
+      res = await r.json();
+    }catch(_){
+      const text = await r.text();
+      res = { status: 0, message: text || "Unknown error" };
+    }
+    return res;
+  })
   .then(res=>{
     loader.style.display="none";
 
-    if(res.includes("success")){
-      msg.innerText="✅ Data purchase successful!";
+    if(res.status===1){
+      msg.innerText=`✅ ${res.message} • ID ${res.order_id}`;
       msg.className="success";
       buyForm.reset();
     }else{
-      msg.innerText="❌ "+res;
+      msg.innerText=`❌ ${res.message || "Failed"}`;
       msg.className="error";
     }
   })
@@ -151,7 +163,7 @@ buyForm.onsubmit = e => {
   });
 };
 </script>
-<script src="../js/main.js"></script>
+<script src="../assets/js/main.js"></script>
 
 </body>
 </html>

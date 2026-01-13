@@ -87,13 +87,13 @@ document.getElementById("loginForm").onsubmit = function(e){
   .then(r=>r.text())
   .then(res=>{
     if(res==="admin"){
-      location.href="pages/admin-dashboard.html";
+      location.href="admin-dashboard.html";
     }
     else if(res==="agent"){
-      location.href="pages/agent-dashboard.html";
+      location.href="agent-dashboard.html";
     }
     else if(res==="subagent"){
-      location.href="pages/subagent-dashboard.html";
+      location.href="subagent-dashboard.html";
     }
     else{
       msg.innerText=res;

@@ -22,7 +22,7 @@ function hideLoader(){
 =========================== */
 function toast(message, type="success"){
   let box = document.createElement("div");
-  box.className = toast ${type};
+  box.className = `toast ${type}`;
   box.innerText = message;
   document.body.appendChild(box);
 
@@ -65,7 +65,7 @@ function redirectByRole(role){
    LOGOUT
 =========================== */
 function logout(){
-  fetch(`${API_BASE}/Logout.php`)
+  fetch(`${API_BASE}/logout.php`)
     .then(()=>{
       toast("Logged out");
       setTimeout(()=>location.href="../login.html",800);
@@ -104,7 +104,8 @@ document.addEventListener("DOMContentLoaded",()=>{
 /*========================
         BUY DATA
   ======================*/
-  document.getElementById("buyBtn").addEventListener("click", () => {
+  const buyBtn = document.getElementById("buyBtn");
+  if (buyBtn) buyBtn.addEventListener("click", () => {
   const network = document.getElementById("network").value;
   const volume  = document.getElementById("volume").value;
   const number  = document.getElementById("number").value;
