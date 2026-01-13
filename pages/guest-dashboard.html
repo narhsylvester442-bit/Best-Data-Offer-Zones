@@ -56,6 +56,17 @@ footer{
   font-size:13px;
   opacity:.7;
 }
+.toast{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  background:#22c55e;
+  color:#fff;
+  padding:12px 18px;
+  border-radius:6px;
+  z-index:10000;
+}
+.toast.error{background:#ef4444}
 </style>
 </head>
 
@@ -63,6 +74,19 @@ footer{
 
 <div class="card">
   <h2>Buy Data Bundle</h2>
+
+  <div id="globalLoader" style="
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.6);
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+  color:#fff;
+">
+  Loading...
+</div>
 
   <form id="buyForm">
     <select id="network" required>
@@ -127,6 +151,7 @@ buyForm.onsubmit = e => {
   });
 };
 </script>
+<script src="../js/main.js"></script>
 
 </body>
 </html>
